@@ -13,6 +13,6 @@ namespace BlogAppAPI.Models
         public int AuthorId { get; set; }
 
         // Navigation properties
-        public required User Author { get; set; }
+        public User Author { get; set; } = null!;
     }
 }
