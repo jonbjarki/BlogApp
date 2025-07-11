@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace BlogAppAPI.Models
 {
     public class Post
@@ -10,9 +5,9 @@ namespace BlogAppAPI.Models
         public int Id { get; set; }
         public string Content { get; set; } = "";
 
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; } = null!;
 
         // Navigation properties
-        public User Author { get; set; } = null!;
+        public ApplicationUser Author { get; set; } = null!;
     }
 }

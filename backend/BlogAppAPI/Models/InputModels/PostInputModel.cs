@@ -8,6 +8,6 @@ namespace BlogAppAPI.Models.InputModels
     public class PostInputModel
     {
         public required string Content { get; set; }
-        public int AuthorId { get; set; }
+        public string AuthorId { get; set; } = null!;
     }
 }
