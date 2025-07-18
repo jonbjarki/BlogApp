@@ -3,7 +3,7 @@ import BlogPost from "@/components/BlogPost";
 export default function Home() {
   return (
     <div>
-      <ul>
+      <ul className="flex items-center justify-center mt-4">
         <BlogPost
           title="This is a post!"
           description="Click here to learn how to make your very own blog post"

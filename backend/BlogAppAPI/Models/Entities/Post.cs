@@ -4,7 +4,8 @@ namespace BlogAppAPI.Models
     {
         public int Id { get; set; }
         public string Content { get; set; } = "";
-
+        public string Description { get; set; } = "";
+        public string CoverImageUrl { get; set; } = "";
         public string AuthorId { get; set; } = null!;
 
         // Navigation properties

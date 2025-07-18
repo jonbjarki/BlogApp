@@ -33,7 +33,12 @@ namespace BlogAppAPI.Controllers
             {
                 Id = p.Id,
                 Content = p.Content,
-                AuthorName = p.Author.Name
+                Description = p.Description,
+                CoverImageUrl = p.CoverImageUrl,
+                Author = new UserDto
+                {
+                    Name = p.Author.Name
+                }
             }));
         }
 
@@ -45,8 +50,13 @@ namespace BlogAppAPI.Controllers
                 .Select(p => new PostDto
                 {
                     Id = p.Id,
-                    AuthorName = p.Author.Email!,
                     Content = p.Content,
+                    Description = p.Description,
+                    CoverImageUrl = p.CoverImageUrl,
+                    Author = new UserDto
+                    {
+                        Name = p.Author.Name
+                    }
                 })
                 .FirstOrDefault();
 
@@ -65,6 +75,8 @@ namespace BlogAppAPI.Controllers
             var newPost = new Post
             {
                 Content = post.Content,
+                Description = post.Description,
+                CoverImageUrl = post.CoverImageUrl,
                 AuthorId = userId,
             };
 

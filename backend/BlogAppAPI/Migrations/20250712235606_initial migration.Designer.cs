@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogAppAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250711131914_initial migration")]
+    [Migration("20250712235606_initial migration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -105,10 +105,8 @@ namespace BlogAppAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("AuthorId1")
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Content")
@@ -117,7 +115,7 @@ namespace BlogAppAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId1");
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Posts");
                 });
@@ -258,7 +256,9 @@ namespace BlogAppAPI.Migrations
                 {
                     b.HasOne("BlogAppAPI.Models.ApplicationUser", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId1");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
                 });

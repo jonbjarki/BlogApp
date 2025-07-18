@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogAppAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250711132742_fixed foreign key relations")]
-    partial class fixedforeignkeyrelations
+    [Migration("20250718144038_Adding columns to Posts table")]
+    partial class AddingcolumnstoPoststable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,6 +110,14 @@ namespace BlogAppAPI.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CoverImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 

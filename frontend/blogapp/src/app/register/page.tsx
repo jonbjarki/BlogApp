@@ -4,12 +4,12 @@ import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-
   const [error, setError] = useState("");
+
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/register`;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,16 +23,11 @@ export default function LoginPage() {
     if (process.env.NEXT_PUBLIC_API_URL === undefined) {
       throw new Error("API_URL is not defined in the environment variables.");
     }
-    let url = `${process.env.NEXT_PUBLIC_API_URL}/login`;
-
-    if (rememberMe) {
-      url += "?useCookies=true";
-    } else {
-      url += "?useSessionCookies=true";
-    }
+    
 
     console.log("Email:", email);
     console.log("Password:", password);
+
     try {
       const res = await axios.post(url, {
         email, password
@@ -40,24 +35,16 @@ export default function LoginPage() {
 
       console.log("Response", res);
       console.log("Data", res.data);
-      if (res.status == 401) {
-        setError("Invalid email or password.");
-        return;
-      } else if (res.status != 200) {
-        setError("An unexpected error occurred. Please try again later.");
-        console.error("Unexpected response: ", res);
-        return;
-      }
 
-      window.location.href = "/"; // Redirect to home page on successful login
+      window.location.href = "/login"; // Redirect to login page on successful registration
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
-        if (err.response.status === 401) {
-          setError("Invalid email or password.");
-          return;
-        }
         console.error("Unexpected error occured:", err);
-        setError(err.response.data.message || "An error occurred during login.");
+        setError(err.response.data.message || "An error occurred during registration.");
+      }
+      else {
+        console.error("Unexpected error:", err);
+        setError("An unexpected error occurred. Please try again later.");
       }
     }
   };
@@ -68,14 +55,12 @@ export default function LoginPage() {
       setEmail(value);
     } else if (name === "password") {
       setPassword(value);
-    } else if (name === "rememberMe") {
-      setRememberMe(e.target.checked);
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-4 border rounded shadow flex flex-col gap-4">
-      <h1 className="text-center text-2xl font-bold">Login</h1>
+      <h1 className="text-center text-2xl font-bold">Register</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-start">
         <div>
           <label className="mr-2">Email:</label>
@@ -97,30 +82,18 @@ export default function LoginPage() {
             required
           />
         </div>
-        <div>
-          <label className="select-none">
-            <input
-              type="checkbox"
-              name="rememberMe"
-              checked={rememberMe}
-              onChange={handleChange}
-              className="mr-2"
-            />
-            Remember Me
-          </label>
-        </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <button
           type="submit"
           className="border border-black p-1 px-2 shadow hover:bg-gray-100 cursor-pointer"
         >
-          Sign In
+          Register
         </button>
       </form>
       <p>
-        {"Don't"} have an account?{" "}
-        <Link href="/register" className="underline hover:text-blue-600">
-          Register here
+        Already have an account?{" "}
+        <Link href="/login" className="underline hover:text-blue-600">
+            Login here
         </Link>
       </p>
     </div>

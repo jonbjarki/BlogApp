@@ -8,6 +8,7 @@ namespace BlogAppAPI.Models.InputModels
     public class PostInputModel
     {
         public required string Content { get; set; }
-        public string AuthorId { get; set; } = null!;
+        public string Description { get; set; } = "";
+        public string CoverImageUrl { get; set; } = "";
     }
 }
