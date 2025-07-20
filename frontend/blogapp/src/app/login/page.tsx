@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/components/AuthProvider";
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,6 +11,16 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const [error, setError] = useState("");
+
+  const {loading, user } = useAuth();
+
+
+  console.log("User:", user);
+  console.log("Loading", loading);
+  // Redirect to home if user is already logged in
+  if (!!user) {
+    window.location.href = "/"
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
