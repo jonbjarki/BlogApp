@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/components/AuthProvider";
 import axios from "axios";
 import Link from "next/link";
 import { useState } from "react";
@@ -8,6 +9,13 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const { loading, user } = useAuth();
+
+  if (!!user) {
+    window.location.href = "/";
+    return null; // Prevent rendering the registration form
+  }
 
   const url = `${process.env.NEXT_PUBLIC_API_URL}/register`;
 
@@ -23,15 +31,19 @@ export default function RegisterPage() {
     if (process.env.NEXT_PUBLIC_API_URL === undefined) {
       throw new Error("API_URL is not defined in the environment variables.");
     }
-    
 
     console.log("Email:", email);
     console.log("Password:", password);
 
     try {
-      const res = await axios.post(url, {
-        email, password
-      }, {headers: { "Content-Type": "application/json" }});
+      const res = await axios.post(
+        url,
+        {
+          email,
+          password,
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
 
       console.log("Response", res);
       console.log("Data", res.data);
@@ -40,9 +52,10 @@ export default function RegisterPage() {
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         console.error("Unexpected error occured:", err);
-        setError(err.response.data.message || "An error occurred during registration.");
-      }
-      else {
+        setError(
+          err.response.data.message || "An error occurred during registration."
+        );
+      } else {
         console.error("Unexpected error:", err);
         setError("An unexpected error occurred. Please try again later.");
       }
@@ -57,6 +70,10 @@ export default function RegisterPage() {
       setPassword(value);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state while checking auth
+  }
 
   return (
     <div className="max-w-md mx-auto mt-10 p-4 border rounded shadow flex flex-col gap-4">
@@ -93,7 +110,7 @@ export default function RegisterPage() {
       <p>
         Already have an account?{" "}
         <Link href="/login" className="underline hover:text-blue-600">
-            Login here
+          Login here
         </Link>
       </p>
     </div>

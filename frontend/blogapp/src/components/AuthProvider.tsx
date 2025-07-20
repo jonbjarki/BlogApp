@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
 import User from "@/types/UserType";
@@ -9,9 +9,15 @@ export interface UserContextType {
     user: User | undefined;
 }
 
-export const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(
+    undefined
+);
 
-export default function AuthProvider({ children }: { children: React.ReactNode }) {
+export default function AuthProvider({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const [user, setUser] = useState<User | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -19,10 +25,16 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     useEffect(() => {
         const checkAuth = async (): Promise<User | undefined> => {
             try {
-                console.log("Response URL: ", `${process.env.NEXT_PUBLIC_API_URL}/manage/info`);
-                const response = await axios(`${process.env.NEXT_PUBLIC_API_URL}/manage/info`, {
-                    withCredentials: true
-                });
+                console.log(
+                    "Response URL: ",
+                    `${process.env.NEXT_PUBLIC_API_URL}/manage/info`
+                );
+                const response = await axios(
+                    `${process.env.NEXT_PUBLIC_API_URL}/manage/info`,
+                    {
+                        withCredentials: true,
+                    }
+                );
 
                 console.log(response);
                 if (response.status === 200) {
@@ -30,9 +42,12 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                     return response.data as User;
                 }
             } catch (error) {
-                // Check if error is an expected 401 status (not authenticated)
+                // Check if error is an expected 404 or 401 status (user not logged in)
                 if (axios.isAxiosError(error)) {
-                    if (error.response?.status === 401) {
+                    if (
+                        error.response?.status === 404 ||
+                        error.response?.status === 401
+                    ) {
                         return undefined;
                     }
                 }
@@ -41,22 +56,24 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
             } finally {
                 setLoading(false);
             }
-        }
+        };
 
-        checkAuth().then((userData) => {
-            setUser(userData);
-            setLoading(false);
-            console.log("Loading:",loading);
-        }).catch((error) => {
-            console.error("Error occured", error);
-        });
-    }, [loading, user])
+        checkAuth()
+            .then((userData) => {
+                setUser(userData);
+                setLoading(false);
+                console.log("Loading:", loading);
+            })
+            .catch((error) => {
+                console.error("Error occured", error);
+            });
+    }, [loading]);
 
     return (
-        <UserContext.Provider value={{user, loading}}>
+        <UserContext.Provider value={{ user, loading }}>
             {children}
         </UserContext.Provider>
-    )
+    );
 }
 
 export const useAuth = () => {
@@ -65,4 +82,4 @@ export const useAuth = () => {
         throw new Error("useAuth must be used wrapped within an AuthProvider");
     }
     return context;
-}
+};

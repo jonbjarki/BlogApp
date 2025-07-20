@@ -1,5 +1,6 @@
 using BlogAppAPI.Data;
 using BlogAppAPI.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,15 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
 
+// Configures the authentication cookie settings
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = ".AspNetCore.Identity.Application";
+    options.Cookie.HttpOnly = false;
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+});
+
 // Add services to the container.
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -24,6 +34,7 @@ builder.Services.AddCors(options =>
                           policy.WithOrigins("http://localhost:3000");
                           policy.WithHeaders("Content-Type", "Authorization");
                           policy.AllowAnyMethod();
+                          policy.AllowCredentials();
                       });
 });
 
@@ -36,7 +47,15 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
+// Adds Identity API endpoints for authentication and user management
 app.MapIdentityApi<ApplicationUser>();
+
+app.MapPost("/logout", async (SignInManager<ApplicationUser> signinManager) =>
+{
+    await signinManager.SignOutAsync();
+    return Results.Ok();
+}).RequireAuthorization();
+
 app.UseCors(MyAllowSpecificOrigins);
 
 // Configure the HTTP request pipeline.
