@@ -27,7 +27,7 @@ export default async function Navbar() {
             )}
 
             {/* Only shows these links if the user is logged in */}
-            {/* isAuthenticated && <LogoutButton /> */}
+            {isAuthenticated && <LogoutButton />}
         </nav>
     );
 }

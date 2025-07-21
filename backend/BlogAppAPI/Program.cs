@@ -23,6 +23,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAuthenticatedUser", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+}); 
+
 // Add services to the container.
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

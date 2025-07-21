@@ -7,6 +7,7 @@ using BlogAppAPI.Data;
 using BlogAppAPI.Models;
 using BlogAppAPI.Models.Dtos;
 using BlogAppAPI.Models.InputModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,6 +68,7 @@ namespace BlogAppAPI.Controllers
             return Ok(post);
         }
 
+        [Authorize(Policy = "RequireAuthenticatedUser")]
         [HttpPost]
         public IActionResult CreatePost([FromBody] PostInputModel post)
         {
