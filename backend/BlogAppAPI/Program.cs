@@ -23,6 +23,24 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+
+    // User settings.
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = true;
+});
+
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAuthenticatedUser", policy =>
@@ -57,12 +75,6 @@ var app = builder.Build();
 
 // Adds Identity API endpoints for authentication and user management
 app.MapIdentityApi<ApplicationUser>();
-
-app.MapPost("/logout", async (SignInManager<ApplicationUser> signinManager) =>
-{
-    await signinManager.SignOutAsync();
-    return Results.Ok();
-}).RequireAuthorization();
 
 app.UseCors(MyAllowSpecificOrigins);
 
