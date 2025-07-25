@@ -5,37 +5,37 @@ import Navbar from "@/components/Navbar";
 import AuthProvider from "@/components/AuthProvider";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+    variable: "--font-geist-sans",
+    subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+    variable: "--font-geist-mono",
+    subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Blog App",
-  description: "Simple Blog Application created using NextJS and .NET Core",
+    title: "Blog App",
+    description: "Simple Blog Application created using NextJS and .NET Core",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full grid place-items-center`}
-        >
-        <AuthProvider>
-        <header>
-          <Navbar />
-        </header>
-        {children}
-      </AuthProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased w-full grid place-items-center`}
+            >
+                <AuthProvider>
+                    <header className="w-full">
+                        <Navbar />
+                    </header>
+                    {children}
+                </AuthProvider>
+            </body>
+        </html>
+    );
 }

@@ -9,25 +9,38 @@ export default async function Navbar() {
     console.log("User in Navbar:", user);
 
     return (
-        <nav className="w-full grid grid-flow-col gap-2 place-items-center">
-            <Link href="/">
-                <p>Home</p>
-            </Link>
+        <nav className="w-full grid grid-cols-3 grid-rows-1 gap-2 px-2 items-center justify-center">
+            {/* nav left */}
+            <div></div>
 
-            {/* Does not show these links if the user is logged in */}
-            {!isAuthenticated && (
-                <>
-                    <Link href="/login">
-                        <p>Login</p>
-                    </Link>
-                    <Link href="/register">
-                        <p>Register</p>
-                    </Link>
-                </>
-            )}
+            <div className="flex flex-row items-center justify-center gap-2">
+                <Link href="/">
+                    <p>Home</p>
+                </Link>
+                <Link href="/posts">
+                    <p>Posts</p>
+                </Link>
 
+                {/* Does not show these links if the user is logged in */}
+                {!isAuthenticated && (
+                    <>
+                        <Link href="/login">
+                            <p>Login</p>
+                        </Link>
+                        <Link href="/register">
+                            <p>Register</p>
+                        </Link>
+                    </>
+                )}
+            </div>
             {/* Only shows these links if the user is logged in */}
-            {isAuthenticated && <LogoutButton />}
+            <div>
+                {isAuthenticated && (
+                    <div className="justify-self-end">
+                        <LogoutButton />
+                    </div>
+                )}
+            </div>
         </nav>
     );
 }
