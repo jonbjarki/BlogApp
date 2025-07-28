@@ -8,6 +8,7 @@ import { useState } from "react";
 export default function RegisterPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const [error, setError] = useState("");
 
     const { loading, user } = useAuth();
@@ -17,7 +18,7 @@ export default function RegisterPage() {
         return null; // Prevent rendering the registration form
     }
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/account/register`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/Accounts/register`;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -41,6 +42,7 @@ export default function RegisterPage() {
             const res = await axios.post(
                 url,
                 {
+                    username,
                     email,
                     password,
                 },
@@ -56,7 +58,7 @@ export default function RegisterPage() {
                 console.error("Unexpected error occured:", err);
                 setError(
                     err.response.data.message ||
-                        "An error occurred during registration."
+                    "An error occurred during registration."
                 );
             } else {
                 console.error("Unexpected error:", err);
@@ -73,6 +75,8 @@ export default function RegisterPage() {
             setEmail(value);
         } else if (name === "password") {
             setPassword(value);
+        } else if (name == "username") {
+            setUsername(value);
         }
     };
 
@@ -81,19 +85,31 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-4 border rounded shadow flex flex-col gap-4">
+        <div className="max-w-md mx-0 mt-10 p-4 border rounded shadow flex flex-col gap-4">
             <h1 className="text-center text-2xl font-bold">Register</h1>
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col gap-2 items-start"
             >
-                <div>
+                <div className="flex flex-col w-full">
+                    <label className="mr-2">Username:</label>
+                    <input
+                        type="text"
+                        name="username"
+                        value={username}
+                        onChange={handleChange}
+                        className="border-1 py-1 pl-1 text-md border-black rounded-sm self-end w-full"
+                        required
+                    />
+                </div>
+                <div className="flex flex-col w-full">
                     <label className="mr-2">Email:</label>
                     <input
                         type="email"
                         name="email"
                         value={email}
                         onChange={handleChange}
+                        className="border-1 py-1 pl-1 text-md border-black rounded-sm self-end w-full"
                         required
                     />
                 </div>
@@ -104,6 +120,7 @@ export default function RegisterPage() {
                         name="password"
                         value={password}
                         onChange={handleChange}
+                        className="border-1 py-1 pl-1 text-md border-black rounded-sm self-end w-full"
                         required
                     />
                 </div>

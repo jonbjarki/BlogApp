@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BlogAppAPI.Models;
 using BlogAppAPI.Models.InputModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,7 +65,8 @@ namespace BlogAppAPI.Controllers
                 return BadRequest(ModelState);
             }
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null) {
+            if (user == null)
+            {
                 return Unauthorized();
             }
 
@@ -76,6 +78,25 @@ namespace BlogAppAPI.Controllers
             }
 
             return Ok();
-        } 
+        }
+
+        [Authorize(Policy = "RequireAuthenticatedUser")]
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return NoContent();
+        }
     }
 }

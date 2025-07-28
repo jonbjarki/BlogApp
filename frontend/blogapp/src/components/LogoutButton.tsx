@@ -9,7 +9,7 @@ export default function LogoutButton() {
     const handleLogout = async () => {
         try {
             const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/logout`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/Accounts/logout`,
                 {},
                 {
                     withCredentials: true, // Config object with credentials

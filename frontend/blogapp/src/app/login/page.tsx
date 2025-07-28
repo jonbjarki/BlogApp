@@ -37,7 +37,7 @@ export default function LoginPage() {
                 "API_URL is not defined in the environment variables."
             );
         }
-        let url = `${process.env.NEXT_PUBLIC_API_URL}/login`;
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/Accounts/login`;
 
         if (rememberMe) {
             url += "?useCookies=true";
