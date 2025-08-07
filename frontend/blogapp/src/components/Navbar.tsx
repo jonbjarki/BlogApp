@@ -9,7 +9,7 @@ export default async function Navbar() {
     console.log("User in Navbar:", user);
 
     return (
-        <nav className="w-full grid grid-cols-3 grid-rows-1 gap-2 px-2 items-center justify-center">
+        <nav className="w-full bg-surface grid grid-cols-3 grid-rows-1 gap-2 px-2 items-center justify-center">
             {/* nav left */}
             <div></div>
 

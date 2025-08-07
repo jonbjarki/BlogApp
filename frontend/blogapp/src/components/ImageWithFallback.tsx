@@ -5,11 +5,13 @@ import { useState } from "react";
 interface ImageWithFallbackProps {
     imageUrl: string;
     fallbackUrl: string;
+    className?: string;
 }
 
 export default function ImageWithFallback({
     imageUrl,
     fallbackUrl,
+    className,
 }: ImageWithFallbackProps) {
     const [currentSrc, setCurrentSrc] = useState(imageUrl || fallbackUrl);
     const [hasError, setHasError] = useState(false);
@@ -33,6 +35,7 @@ export default function ImageWithFallback({
             fill
             style={{ objectFit: "cover" }}
             onError={handleError}
+            className={className}
         />
     );
 }
