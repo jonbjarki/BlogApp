@@ -7,6 +7,7 @@ namespace BlogAppAPI.Models.Dtos
 {
     public class UserDto
     {
-        public string Name { get; set; } = "";
+        public required string UserName { get; set; }
+        public required string Email { get; set; }
     }
 }

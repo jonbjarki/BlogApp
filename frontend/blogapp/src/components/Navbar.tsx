@@ -36,7 +36,10 @@ export default async function Navbar() {
             {/* Only shows these links if the user is logged in */}
             <div>
                 {isAuthenticated && (
-                    <div className="justify-self-end">
+                    <div className="justify-self-end flex flex-row gap-2 items-center">
+                        <Link href="/profile">
+                            <p>Profile</p>
+                        </Link>
                         <LogoutButton />
                     </div>
                 )}

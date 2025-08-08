@@ -1,6 +1,7 @@
 import axios from "axios";
 import { cookies } from "next/headers";
 import User from "@/types/UserType"
+import { FETCH_USER_DETAILS_URL } from "./constants";
 
 export async function getServerUser() {
     const cookieStore = await cookies();
@@ -8,7 +9,7 @@ export async function getServerUser() {
 
     try {
         const res = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/manage/info`,
+            `${FETCH_USER_DETAILS_URL}`,
             {
                 headers: {
                     "Content-Type": "application/json",

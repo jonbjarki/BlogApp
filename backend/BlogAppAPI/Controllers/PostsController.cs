@@ -39,7 +39,8 @@ namespace BlogAppAPI.Controllers
                 CoverImageUrl = p.CoverImageUrl,
                 Author = new UserDto
                 {
-                    Name = p.Author.Name
+                    Email = p.Author.Email!,
+                    UserName = p.Author.UserName!
                 }
             }));
         }
@@ -58,7 +59,8 @@ namespace BlogAppAPI.Controllers
                     CoverImageUrl = p.CoverImageUrl,
                     Author = new UserDto
                     {
-                        Name = p.Author.Name
+                        UserName = p.Author.UserName!,
+                        Email = p.Author.Email!
                     }
                 })
                 .FirstOrDefault();

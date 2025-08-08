@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlogAppAPI.Models;
+using BlogAppAPI.Models.Dtos;
 using BlogAppAPI.Models.InputModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -97,6 +98,23 @@ namespace BlogAppAPI.Controllers
             }
 
             return NoContent();
+        }
+
+        [Authorize(Policy = "RequireAuthenticatedUser")]
+        [HttpGet("info")]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new UserDto
+            {
+                UserName = user.UserName ?? "",
+                Email = user.Email ?? ""
+            });
         }
     }
 }

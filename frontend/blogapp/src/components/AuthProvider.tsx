@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import User from "@/types/UserType";
 import axios from "axios";
+import { FETCH_USER_DETAILS_URL } from "@/lib/constants";
 
 export interface UserContextType {
     loading: boolean;
@@ -25,16 +26,10 @@ export default function AuthProvider({
     useEffect(() => {
         const checkAuth = async (): Promise<User | undefined> => {
             try {
-                console.log(
-                    "Response URL: ",
-                    `${process.env.NEXT_PUBLIC_API_URL}/manage/info`
-                );
-                const response = await axios(
-                    `${process.env.NEXT_PUBLIC_API_URL}/manage/info`,
-                    {
-                        withCredentials: true,
-                    }
-                );
+                console.log("Response URL: ", `${FETCH_USER_DETAILS_URL}`);
+                const response = await axios(`${FETCH_USER_DETAILS_URL}`, {
+                    withCredentials: true,
+                });
 
                 console.log(response);
                 if (response.status === 200) {

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 interface CreatePostFormProps {
-    onCancel: () => void;
+    onCancel?: () => void;
 }
 
 export default function CreatePostForm({ onCancel }: CreatePostFormProps) {
@@ -18,6 +18,12 @@ export default function CreatePostForm({ onCancel }: CreatePostFormProps) {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.name == "title") {
             setPostTitle(e.target.value);
+        }
+    };
+
+    const handleCancel = () => {
+        if (onCancel) {
+            onCancel();
         }
     };
 
@@ -42,7 +48,7 @@ export default function CreatePostForm({ onCancel }: CreatePostFormProps) {
                     onChange={handleChange}
                 />
                 <button type="submit">Create</button>
-                <button type="button" onClick={onCancel}>
+                <button type="button" onClick={handleCancel}>
                     Cancel
                 </button>
             </form>
