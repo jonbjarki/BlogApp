@@ -3,8 +3,9 @@
 import { BlogPostType } from "@/types/BlogPostType";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import BlogPost from "./BlogPost";
+import BlogPost from "./PostListItem";
 import { ClipLoader } from "react-spinners";
+import CenteredSpinner from "./CenteredSpinner";
 
 export default function PostList() {
     const [posts, setPosts] = useState<BlogPostType[]>([]);
@@ -37,20 +38,22 @@ export default function PostList() {
     }, []);
 
     return (
-        <ul className="list-none w-lg mt-4 flex flex-row gap-6 justify-center">
-            <ClipLoader
-                loading={loading}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2"
-            />
-
-            {posts.length === 0 && !loading && (
-                <h1 className="text-2xl text-red-500">No posts found</h1>
+        <>
+            <CenteredSpinner loading={loading} />
+            {!loading && (
+                <ul className="list-none w-full mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {posts.length === 0 && (
+                        <h1 className="text-2xl text-red-500">
+                            No posts found
+                        </h1>
+                    )}
+                    {posts.map((p) => (
+                        <li key={p.id}>
+                            <BlogPost post={p} />
+                        </li>
+                    ))}
+                </ul>
             )}
-            {posts.map((p) => (
-                <li key={p.id}>
-                    <BlogPost post={p} />
-                </li>
-            ))}
-        </ul>
+        </>
     );
 }

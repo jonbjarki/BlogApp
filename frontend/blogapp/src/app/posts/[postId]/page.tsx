@@ -1,23 +1,21 @@
 "use client";
 
+import CenteredSpinner from "@/components/CenteredSpinner";
+import { FETCH_POSTS_URL } from "@/lib/constants";
 import { BlogPostType } from "@/types/BlogPostType";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ClipLoader } from "react-spinners";
 
-interface ViewPostPageProps {
-    params: { postId: string };
-}
-
-export default function ViewPostPage({
-    params: { postId },
-}: ViewPostPageProps) {
+export default function ViewPostPage() {
     const [post, setPost] = useState<BlogPostType | null>(null);
     const loading = post === null;
+    const { postId } = useParams<{ postId: string }>();
 
     useEffect(() => {
         const fetchPost = async () => {
-            const response = await fetch(`/api/posts/${postId}`);
+            const response = await fetch(`${FETCH_POSTS_URL}/${postId}`);
             const data = await response.json();
+            console.log("Fetched post data:", data);
             setPost(data);
         };
         fetchPost();
@@ -25,13 +23,17 @@ export default function ViewPostPage({
 
     return (
         <>
-            <ClipLoader
-                loading={loading}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2"
-            />
-            <div>
-                <h1>{post?.title}</h1>
-            </div>
+            <CenteredSpinner loading={loading} />
+            {!loading && (
+                <div>
+                    <h1>{post?.title}</h1>
+                    <p>{post?.description}</p>
+                    <p>By: {post?.author.userName}</p>
+                    <hr />
+
+                    <p>{post?.content}</p>
+                </div>
+            )}
         </>
     );
 }

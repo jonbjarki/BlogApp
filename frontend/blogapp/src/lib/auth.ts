@@ -1,6 +1,6 @@
 import axios from "axios";
 import { cookies } from "next/headers";
-import User from "@/types/UserType"
+import User from "@/types/UserTypes"
 import { FETCH_USER_DETAILS_URL } from "./constants";
 
 export async function getServerUser() {

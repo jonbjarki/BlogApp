@@ -1,6 +1,4 @@
-interface AuthorType {
-    name: string
-}
+import { AuthorType } from "./UserTypes";
 
 export interface BlogPostType {
     id: number;

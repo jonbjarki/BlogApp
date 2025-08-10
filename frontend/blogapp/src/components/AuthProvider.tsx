@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import User from "@/types/UserType";
+import User from "@/types/UserTypes";
 import axios from "axios";
 import { FETCH_USER_DETAILS_URL } from "@/lib/constants";
 
