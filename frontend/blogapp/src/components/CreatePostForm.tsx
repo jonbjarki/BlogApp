@@ -4,6 +4,7 @@ import { CREATE_POST_URL } from "@/lib/constants";
 import { getErrorMessage } from "@/lib/utils";
 import axios from "axios";
 import { useState } from "react";
+import { createPostAction } from "@/app/actions";
 
 interface CreatePostFormProps {
     onCancel?: () => void;
@@ -15,34 +16,34 @@ export default function CreatePostForm({ onCancel }: CreatePostFormProps) {
     const [postContent, setPostContent] = useState("");
     const [postCoverImageUrl, setPostCoverImageUrl] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const res = await axios.post(
-                CREATE_POST_URL,
-                {
-                    title: postTitle,
-                    description: postDescription,
-                    content: postContent,
-                    coverImageUrl: postCoverImageUrl,
-                },
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
-                }
-            );
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     try {
+    //         const res = await axios.post(
+    //             CREATE_POST_URL,
+    //             {
+    //                 title: postTitle,
+    //                 description: postDescription,
+    //                 content: postContent,
+    //                 coverImageUrl: postCoverImageUrl,
+    //             },
+    //             {
+    //                 headers: { "Content-Type": "application/json" },
+    //                 withCredentials: true,
+    //             }
+    //         );
 
-            console.log("Post created successfully:", res.data);
-            setPostContent("");
-            setPostTitle("");
-            setPostDescription("");
-            setPostCoverImageUrl("");
-            handleCancel();
-        } catch (error: unknown) {
-            const message = getErrorMessage(error);
-            console.error("Error occurred with message: ", message);
-        }
-    };
+    //         console.log("Post created successfully:", res.data);
+    //         setPostContent("");
+    //         setPostTitle("");
+    //         setPostDescription("");
+    //         setPostCoverImageUrl("");
+    //         handleCancel();
+    //     } catch (error: unknown) {
+    //         const message = getErrorMessage(error);
+    //         console.error("Error occurred with message: ", message);
+    //     }
+    // };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -74,7 +75,8 @@ export default function CreatePostForm({ onCancel }: CreatePostFormProps) {
             </button>
 
             <form
-                onSubmit={handleSubmit}
+                // onSubmit={handleSubmit}
+                action={createPostAction}
                 className="rounded-md p-4 shadow-sm bg-surface flex flex-col gap-4 w-full"
             >
                 <div className="flex flex-col gap-2">
