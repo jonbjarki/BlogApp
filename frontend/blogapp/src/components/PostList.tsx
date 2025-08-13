@@ -1,6 +1,5 @@
 import { BlogPostType } from "@/types/BlogPostType";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import BlogPost from "./PostListItem";
 import { ClipLoader } from "react-spinners";
 import CenteredSpinner from "./CenteredSpinner";
