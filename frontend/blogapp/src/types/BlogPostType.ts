@@ -8,3 +8,12 @@ export interface BlogPostType {
     author: AuthorType;
     coverImageUrl: string; 
 }
+
+export interface FormErrorStateType {
+    errors: {
+        title?: string,
+        description?: string,
+        coverImageUrl?: string,
+        content?: string,
+    }
+}

@@ -3,23 +3,11 @@
 import { useActionState, useState } from "react";
 import { createPostAction } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import { useFormState } from "react-dom";
+import { FormErrorStateType } from "@/types/BlogPostType";
 
-interface errorStateType {
-    errors: {
-        title?: string,
-        description?: string,
-        coverImageUrl?: string,
-        content?: string,
-    }
-}
-
-const initialState: errorStateType = {
-    errors: {
-        title: "",
-        description: "",
-        coverImageUrl: "",
-        content: "",
-    }
+const initialState: FormErrorStateType = {
+    errors: {}
 }
 
 export default function CreatePostForm() {
@@ -27,8 +15,8 @@ export default function CreatePostForm() {
     const [postDescription, setPostDescription] = useState("");
     const [postContent, setPostContent] = useState("");
     const [postCoverImageUrl, setPostCoverImageUrl] = useState("");
-
-    const [state, formAction, isPending] = useActionState(createPostAction, initialState)
+    const [state, formAction] = useFormState(createPostAction, initialState);
+    
 
     const router = useRouter();
 
