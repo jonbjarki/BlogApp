@@ -1,4 +1,5 @@
 import { isAxiosError } from "axios";
+import { cookies } from "next/headers";
 
 export function getErrorMessage(error: unknown): string {
     if (isAxiosError(error) && error.response) {
@@ -17,4 +18,10 @@ export function getErrorMessage(error: unknown): string {
         return error.message;
     }
     return String(error);
+}
+
+export async function getAuthCookie() {
+    const cookieStore = await cookies();
+    const authCookie = cookieStore.get(".AspNetCore.Identity.Application");
+    return authCookie ?? null
 }

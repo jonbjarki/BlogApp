@@ -8,9 +8,19 @@ import { FETCH_POSTS_URL } from "@/lib/constants";
 async function fetchPosts() {
     const res = await fetch(FETCH_POSTS_URL, {
         next: { tags: ["posts"], revalidate: 3600 },
+        credentials: "include",
     });
 
-    return res.json() as Promise<BlogPostType[]>;
+    if (!res.ok) {
+        console.error("Fetching posts failed",await res.text());
+        return [];
+    }
+
+    console.log("Posts fetched:", res);
+    const data = await res.json();
+    console.log("Fetched:",data);
+
+    return data as BlogPostType[];
 }
 
 export default async function PostList() {

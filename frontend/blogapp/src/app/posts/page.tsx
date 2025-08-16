@@ -1,5 +1,7 @@
 import CreatePostButton from "@/components/CreatePostButton";
+import CreatePostForm from "@/components/CreatePostForm";
 import PostList from "@/components/PostList";
+import { redirect } from "next/navigation";
 
 export default async function PostsPage({
     searchParams,
@@ -12,7 +14,7 @@ export default async function PostsPage({
         <main className="mt-4 flex max-w-4xl flex-col items-center">
             <div className="w-full flex flex-row justify-between items-center mb-4">
                 {!showForm && <h1 className="text-4xl font-bold">Posts</h1>}
-                <CreatePostButton />
+                {!showForm ? <CreatePostButton /> : <CreatePostForm />}
             </div>
             <PostList />
         </main>

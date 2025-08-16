@@ -1,20 +1,36 @@
 "use client";
 
-import { CREATE_POST_URL } from "@/lib/constants";
-import { getErrorMessage } from "@/lib/utils";
-import axios from "axios";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { createPostAction } from "@/app/actions";
+import { useRouter } from "next/navigation";
 
-interface CreatePostFormProps {
-    onCancel?: () => void;
+interface errorStateType {
+    errors: {
+        title?: string,
+        description?: string,
+        coverImageUrl?: string,
+        content?: string,
+    }
 }
 
-export default function CreatePostForm({ onCancel }: CreatePostFormProps) {
+const initialState: errorStateType = {
+    errors: {
+        title: "",
+        description: "",
+        coverImageUrl: "",
+        content: "",
+    }
+}
+
+export default function CreatePostForm() {
     const [postTitle, setPostTitle] = useState("");
     const [postDescription, setPostDescription] = useState("");
     const [postContent, setPostContent] = useState("");
     const [postCoverImageUrl, setPostCoverImageUrl] = useState("");
+
+    const [state, formAction, isPending] = useActionState(createPostAction, initialState)
+
+    const router = useRouter();
 
     // const handleSubmit = async (e: React.FormEvent) => {
     //     e.preventDefault();
@@ -60,15 +76,13 @@ export default function CreatePostForm({ onCancel }: CreatePostFormProps) {
     };
 
     const handleCancel = () => {
-        if (onCancel) {
-            onCancel();
-        }
+        router.push("/posts");
     };
 
     return (
         <div className="relative w-full">
             <button
-                onClick={onCancel}
+                onClick={handleCancel}
                 className="rounded absolute top-1 right-2 cursor-pointer"
             >
                 x
@@ -76,7 +90,7 @@ export default function CreatePostForm({ onCancel }: CreatePostFormProps) {
 
             <form
                 // onSubmit={handleSubmit}
-                action={createPostAction}
+                action={formAction}
                 className="rounded-md p-4 shadow-sm bg-surface flex flex-col gap-4 w-full"
             >
                 <div className="flex flex-col gap-2">
@@ -88,6 +102,7 @@ export default function CreatePostForm({ onCancel }: CreatePostFormProps) {
                         onChange={handleChange}
                         className="border p-2 rounded-md border-primary"
                     />
+                    {state?.errors.title &&}
                 </div>
 
                 <div className="flex flex-col gap-2">

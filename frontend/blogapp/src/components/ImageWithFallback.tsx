@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ImageWithFallbackProps {
     imageUrl: string;
@@ -13,8 +13,24 @@ export default function ImageWithFallback({
     fallbackUrl,
     className,
 }: ImageWithFallbackProps) {
+    const [loading, setLoading] = useState(true);
     const [currentSrc, setCurrentSrc] = useState(imageUrl || fallbackUrl);
     const [hasError, setHasError] = useState(false);
+
+    // Validate url on mount
+    useEffect(()=> {
+        let src;
+        try {
+            src = new URL(imageUrl);
+            setCurrentSrc(imageUrl);
+
+        } catch (_) {
+            setCurrentSrc(fallbackUrl);
+        } finally {
+            setLoading(false);
+        }
+    }, [])
+
 
     const handleError = () => {
         if (!hasError && currentSrc !== fallbackUrl) {
@@ -23,8 +39,8 @@ export default function ImageWithFallback({
         }
     };
 
-    // Don't render if both imageUrl and fallbackUrl are empty
-    if (!imageUrl && !fallbackUrl) {
+    // Don't render if both imageUrl and fallbackUrl are empty or if loading
+    if ((!imageUrl && !fallbackUrl) || loading) {
         return null;
     }
 
