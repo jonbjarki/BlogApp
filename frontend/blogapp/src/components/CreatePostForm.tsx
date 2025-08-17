@@ -10,17 +10,19 @@ const initialState: FormErrorStateType = {
         title: "",
         content: "",
         description: "",
-        coverImageUrl: ""
-    }
-}
+        coverImageUrl: "",
+    },
+};
 
 export default function CreatePostForm() {
     const [postTitle, setPostTitle] = useState("");
     const [postDescription, setPostDescription] = useState("");
     const [postContent, setPostContent] = useState("");
     const [postCoverImageUrl, setPostCoverImageUrl] = useState("");
-    const [state, formAction] = useActionState(createPostAction, initialState);
-    
+    const [state, formAction, isPending] = useActionState(
+        createPostAction,
+        initialState
+    );
 
     const router = useRouter();
 
@@ -93,9 +95,18 @@ export default function CreatePostForm() {
                         value={postTitle}
                         onChange={handleChange}
                         required
-                        className={"border p-2 rounded-md " + (state?.errors.title ? "border-red-500" : "border-primary")}
+                        minLength={2}
+                        maxLength={100}
+                        className={
+                            "border p-2 rounded-md " +
+                            (state?.errors.title
+                                ? "border-red-500"
+                                : "border-primary")
+                        }
                     />
-                    {state?.errors.title && <p className="text-red-500">{state.errors.title}</p> }
+                    {state?.errors.title && (
+                        <p className="text-red-500">{state.errors.title}</p>
+                    )}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -106,8 +117,18 @@ export default function CreatePostForm() {
                         value={postDescription}
                         onChange={handleChange}
                         required
-                        className={"border p-2 rounded-md border-primary"}
+                        className={
+                            "border p-2 rounded-md " +
+                            (state?.errors.description
+                                ? "border-red-500"
+                                : "border-primary")
+                        }
                     />
+                    {state?.errors.description && (
+                        <p className="text-red-500">
+                            {state.errors.description}
+                        </p>
+                    )}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -117,8 +138,18 @@ export default function CreatePostForm() {
                         name="coverImageUrl"
                         value={postCoverImageUrl}
                         onChange={handleChange}
-                        className="border p-2 rounded-md border-primary"
+                        className={
+                            "border p-2 rounded-md " +
+                            (state?.errors.coverImageUrl
+                                ? "border-red-500"
+                                : "border-primary")
+                        }
                     />
+                    {state?.errors.coverImageUrl && (
+                        <p className="text-red-500">
+                            {state.errors.coverImageUrl}
+                        </p>
+                    )}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -130,20 +161,30 @@ export default function CreatePostForm() {
                         required
                         minLength={10}
                         maxLength={4000}
-                        className="border p-2 rounded-md border-primary h-48"
+                        className={
+                            "border p-2 rounded-md h-54 " +
+                            (state?.errors.coverImageUrl
+                                ? "border-red-500"
+                                : "border-primary")
+                        }
                     />
+                    {state?.errors.content && (
+                        <p className="text-red-500">{state.errors.content}</p>
+                    )}
                 </div>
 
                 <button
                     type="submit"
-                    className="bg-primary text-white rounded-md p-2 cursor-pointer"
+                    className="bg-primary text-white rounded-md p-2 cursor-pointer disabled:bg-primary/50 disabled:cursor-not-allowed"
+                    disabled={isPending}
                 >
                     Create
                 </button>
                 <button
                     type="button"
                     onClick={handleCancel}
-                    className="border p-2 rounded-md border-red-500 cursor-pointer"
+                    disabled={isPending}
+                    className="border p-2 rounded-md border-red-500 cursor-pointer disabled:border-red-500/50 disabled:cursor-not-allowed"
                 >
                     Cancel
                 </button>

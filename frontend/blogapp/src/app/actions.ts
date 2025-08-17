@@ -1,7 +1,7 @@
 "use server"
 
 import { CREATE_POST_URL } from "@/lib/constants";
-import { getAuthCookie, getErrorMessage } from "@/lib/utils";
+import { getAuthCookie, getErrorMessage, getZodIssues } from "@/lib/utils";
 import { FormErrorStateType } from "@/types/BlogPostType";
 import { revalidateTag } from "next/cache";
 import { z } from "zod";
@@ -14,7 +14,7 @@ const createPostSchema = z.object({
 });
 
 export async function createPostAction(prevState: any, data: FormData): Promise<FormErrorStateType | undefined> {
-    const validatedField = createPostSchema.safeParse({
+    const result = createPostSchema.safeParse({
         title: data.get("title"),
         description: data.get("description"),
         content: data.get("content"),
@@ -22,20 +22,19 @@ export async function createPostAction(prevState: any, data: FormData): Promise<
     });
 
     // Return early if parse not successful
-    if (!validatedField.success) {
+    if (!result.success) {
+        const errors = getZodIssues(result.error.issues);
         console.error("Validation failed:");
-        console.error(z.treeifyError(validatedField.error))
+        console.error(errors);
         return {
-            errors: {
-                title: "Example error"
-            }
+            errors
         };
     }
 
     // Gets authentication cookie to authenticate user to backend
     const authCookie = await getAuthCookie();
 
-    const { title, description, content, coverImageUrl } = validatedField.data;
+    const { title, description, content, coverImageUrl } = result.data;
     const reqBody = JSON.stringify({
         title,
         description,
