@@ -2,17 +2,18 @@
 
 import { CREATE_POST_URL } from "@/lib/constants";
 import { getAuthCookie, getErrorMessage } from "@/lib/utils";
+import { FormErrorStateType } from "@/types/BlogPostType";
 import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
 const createPostSchema = z.object({
     title: z.string({ error: "Invalid title" }).min(2).max(100),
     description: z.string({ error: "Invalid description" }).min(2).max(300),
-    content: z.string({ error: "Invalid content" }).min(2).max(10000),
+    content: z.string({ error: "Invalid content" }).min(10).max(4000),
     coverImageUrl: z.optional(z.url())
 });
 
-export async function createPostAction(prevState: any, data: FormData) {
+export async function createPostAction(prevState: any, data: FormData): Promise<FormErrorStateType | undefined> {
     const validatedField = createPostSchema.safeParse({
         title: data.get("title"),
         description: data.get("description"),

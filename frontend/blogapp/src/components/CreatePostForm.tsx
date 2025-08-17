@@ -3,11 +3,15 @@
 import { useActionState, useState } from "react";
 import { createPostAction } from "@/app/actions";
 import { useRouter } from "next/navigation";
-import { useFormState } from "react-dom";
 import { FormErrorStateType } from "@/types/BlogPostType";
 
 const initialState: FormErrorStateType = {
-    errors: {}
+    errors: {
+        title: "",
+        content: "",
+        description: "",
+        coverImageUrl: ""
+    }
 }
 
 export default function CreatePostForm() {
@@ -15,7 +19,7 @@ export default function CreatePostForm() {
     const [postDescription, setPostDescription] = useState("");
     const [postContent, setPostContent] = useState("");
     const [postCoverImageUrl, setPostCoverImageUrl] = useState("");
-    const [state, formAction] = useFormState(createPostAction, initialState);
+    const [state, formAction] = useActionState(createPostAction, initialState);
     
 
     const router = useRouter();
@@ -88,9 +92,10 @@ export default function CreatePostForm() {
                         name="title"
                         value={postTitle}
                         onChange={handleChange}
-                        className="border p-2 rounded-md border-primary"
+                        required
+                        className={"border p-2 rounded-md " + (state?.errors.title ? "border-red-500" : "border-primary")}
                     />
-                    {state?.errors.title &&}
+                    {state?.errors.title && <p className="text-red-500">{state.errors.title}</p> }
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -100,7 +105,8 @@ export default function CreatePostForm() {
                         name="description"
                         value={postDescription}
                         onChange={handleChange}
-                        className="border p-2 rounded-md border-primary"
+                        required
+                        className={"border p-2 rounded-md border-primary"}
                     />
                 </div>
 
@@ -121,6 +127,9 @@ export default function CreatePostForm() {
                         name="content"
                         value={postContent}
                         onChange={handleChange}
+                        required
+                        minLength={10}
+                        maxLength={4000}
                         className="border p-2 rounded-md border-primary h-48"
                     />
                 </div>

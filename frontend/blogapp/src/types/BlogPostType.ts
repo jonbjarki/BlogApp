@@ -9,7 +9,7 @@ export interface BlogPostType {
     coverImageUrl: string; 
 }
 
-export interface FormErrorStateType {
+export type FormErrorStateType = {
     errors: {
         title?: string,
         description?: string,

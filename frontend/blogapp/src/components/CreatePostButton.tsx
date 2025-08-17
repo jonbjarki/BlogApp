@@ -18,7 +18,7 @@ export default function CreatePostButton() {
                 // >
                 //     <FaPlus /> New Post
                 // </button>
-                <Link href={pathname + "?showForm=true"}>
+                <Link className="flex flex-row gap-2 items-center bg-primary px-4 py-2 shadow-lg" href={pathname + "?showForm=true"}>
                     <FaPlus /> Create Post
                 </Link>
             )}
