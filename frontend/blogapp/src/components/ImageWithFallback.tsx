@@ -5,32 +5,34 @@ import { useEffect, useState } from "react";
 interface ImageWithFallbackProps {
     imageUrl: string;
     fallbackUrl: string;
-    className?: string;
+    alt: string;
 }
 
 export default function ImageWithFallback({
     imageUrl,
     fallbackUrl,
-    className,
-}: ImageWithFallbackProps) {
+    alt,
+    ...props
+}: ImageWithFallbackProps &
+    Omit<React.ComponentProps<typeof Image>, "src" | "alt">) {
     const [loading, setLoading] = useState(true);
     const [currentSrc, setCurrentSrc] = useState(imageUrl || fallbackUrl);
     const [hasError, setHasError] = useState(false);
 
     // Validate url on mount
-    useEffect(()=> {
-        let src;
+    useEffect(() => {
+        setLoading(true);
         try {
-            src = new URL(imageUrl);
+            new URL(imageUrl);
             setCurrentSrc(imageUrl);
-
+            setHasError(false);
         } catch (_) {
             setCurrentSrc(fallbackUrl);
+            setHasError(true);
         } finally {
             setLoading(false);
         }
-    }, [])
-
+    }, [imageUrl, fallbackUrl]);
 
     const handleError = () => {
         if (!hasError && currentSrc !== fallbackUrl) {
@@ -45,13 +47,6 @@ export default function ImageWithFallback({
     }
 
     return (
-        <Image
-            src={currentSrc}
-            alt="cover image for blog post"
-            fill
-            style={{ objectFit: "cover" }}
-            onError={handleError}
-            className={className}
-        />
+        <Image src={currentSrc} alt={alt} onError={handleError} {...props} />
     );
 }

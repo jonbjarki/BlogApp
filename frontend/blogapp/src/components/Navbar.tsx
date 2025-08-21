@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { getServerUser } from "@/lib/auth";
+import { getUserAction } from "@/lib/auth";
 import LogoutButton from "./LogoutButton";
 
 export default async function Navbar() {
-    const user = await getServerUser();
+    const user = await getUserAction();
     const isAuthenticated = !!user;
 
     console.log("User in Navbar:", user);
@@ -14,9 +14,6 @@ export default async function Navbar() {
             <div></div>
 
             <div className="flex flex-row items-center justify-center gap-2">
-                <Link href="/">
-                    <p>Home</p>
-                </Link>
                 <Link href="/posts">
                     <p>Posts</p>
                 </Link>

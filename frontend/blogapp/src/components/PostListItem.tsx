@@ -1,6 +1,7 @@
 import { BlogPostType } from "@/types/BlogPostType";
 import ImageWithFallback from "./ImageWithFallback";
 import Link from "next/link";
+import { POST_FALLBACK_IMAGE } from "@/lib/constants";
 
 export default function PostListItem({ post }: { post: BlogPostType }) {
     return (
@@ -11,8 +12,10 @@ export default function PostListItem({ post }: { post: BlogPostType }) {
             <span className="relative w-full h-full p-0 m-0 row-span-2">
                 <ImageWithFallback
                     imageUrl={post.coverImageUrl}
-                    fallbackUrl="https://cdn.pixabay.com/photo/2015/09/23/22/56/dog-954520_1280.jpg"
+                    fallbackUrl={POST_FALLBACK_IMAGE}
                     className="rounded-t-xl"
+                    fill
+                    alt={post.title}
                 />
             </span>
             <div className="m-0 self-start pt-2 w-full h-full">

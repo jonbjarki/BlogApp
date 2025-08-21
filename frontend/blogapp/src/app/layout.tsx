@@ -20,14 +20,14 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-    children
+    children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased w-full grid place-items-center`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased w-full h-full grid place-items-center`}
             >
                 <AuthProvider>
                     <header className="w-full">

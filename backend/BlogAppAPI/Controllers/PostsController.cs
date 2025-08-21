@@ -37,6 +37,7 @@ namespace BlogAppAPI.Controllers
                 Content = p.Content,
                 Description = p.Description,
                 CoverImageUrl = p.CoverImageUrl,
+                DateCreated = p.DateCreated,
                 Author = new UserDto
                 {
                     Email = p.Author.Email!,
@@ -57,6 +58,7 @@ namespace BlogAppAPI.Controllers
                     Content = p.Content,
                     Description = p.Description,
                     CoverImageUrl = p.CoverImageUrl,
+                    DateCreated = p.DateCreated,
                     Author = new UserDto
                     {
                         UserName = p.Author.UserName!,
@@ -86,6 +88,7 @@ namespace BlogAppAPI.Controllers
                 Description = post.Description,
                 CoverImageUrl = post.CoverImageUrl,
                 AuthorId = userId,
+                DateCreated = DateTime.UtcNow
             };
 
             _context.Add(newPost);

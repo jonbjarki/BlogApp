@@ -1,6 +1,6 @@
 import { ClipLoader } from "react-spinners";
 
-export default function CenteredSpinner({ loading }: { loading: boolean }) {
+export default function CenteredSpinner({ loading }: { loading?: boolean }) {
     return (
         <ClipLoader
             loading={loading}

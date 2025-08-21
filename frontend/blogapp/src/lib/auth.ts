@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import User from "@/types/UserTypes"
 import { FETCH_USER_DETAILS_URL } from "./constants";
 
-export async function getServerUser() {
+export async function getUserAction() {
     const cookieStore = await cookies();
     const authCookie = cookieStore.get(".AspNetCore.Identity.Application");
 

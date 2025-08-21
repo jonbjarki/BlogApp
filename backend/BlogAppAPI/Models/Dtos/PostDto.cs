@@ -7,6 +7,7 @@ namespace BlogAppAPI.Models.Dtos
         public string Content { get; set; } = "";
         public string Description { get; set; } = "";
         public string CoverImageUrl { get; set; } = "";
+        public DateTime DateCreated { get; set; }
         public UserDto Author { get; set; } = null!;
     }
 }

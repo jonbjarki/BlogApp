@@ -7,6 +7,11 @@ export interface BlogPostType {
     content: string;
     author: AuthorType;
     coverImageUrl: string; 
+    dateCreated: Date;
+}
+
+export interface BlogPostFetchResponse extends Omit<BlogPostType, 'dateCreated'> {
+    dateCreated: string;
 }
 
 export type FormErrorStateType = {

@@ -1,10 +1,7 @@
 import BlogPost from "@/components/PostListItem";
 import PostList from "@/components/PostList";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-    return (
-        <>
-            <h1 className="text-2xl"> This is the home page</h1>
-        </>
-    );
+    return redirect("/posts");
 }
