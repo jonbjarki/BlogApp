@@ -12,13 +12,12 @@ export default function CreatePostButton() {
     return (
         <Suspense fallback={<div>Loading...</div>}>
             {!isVisible && (
-                // <button
-                //     onClick={handleShow}
-                //     className="rounded-lg bg-primary py-2 px-4 w-fit cursor-pointer hover:bg-primary/80 text-white flex align-middle items-center gap-2"
-                // >
-                //     <FaPlus /> New Post
-                // </button>
-                <Link className="flex flex-row gap-2 items-center bg-primary px-4 py-2 shadow-lg" href={pathname + "?showForm=true"}>
+                <Link
+                    replace
+                    className="flex flex-row gap-2 items-center bg-primary px-4 py-2 shadow-lg"
+                    role="button"
+                    href={pathname + "?showForm=true"}
+                >
                     <FaPlus /> Create Post
                 </Link>
             )}

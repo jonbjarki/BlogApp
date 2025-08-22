@@ -1,3 +1,4 @@
+"use client";
 import CenteredSpinner from "@/components/CenteredSpinner";
 
 export default function PostsLoading() {

@@ -21,4 +21,5 @@ export type FormErrorStateType = {
         coverImageUrl?: string,
         content?: string,
     }
+    success?: boolean;
 }

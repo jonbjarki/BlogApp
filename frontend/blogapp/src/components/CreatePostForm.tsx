@@ -1,9 +1,14 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { createPostAction } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { FormErrorStateType } from "@/types/BlogPostType";
+import {
+    POST_CONTENT_MAX_LENGTH,
+    POST_DESCRIPTION_MAX_LENGTH,
+    POST_TITLE_MAX_LENGTH,
+} from "@/lib/constants";
 
 const initialState: FormErrorStateType = {
     errors: {
@@ -12,6 +17,7 @@ const initialState: FormErrorStateType = {
         description: "",
         coverImageUrl: "",
     },
+    success: false,
 };
 
 export default function CreatePostForm() {
@@ -23,6 +29,15 @@ export default function CreatePostForm() {
         createPostAction,
         initialState
     );
+
+    const formRef = useRef<HTMLFormElement>(null);
+
+    useEffect(() => {
+        console.log("State changed:", state);
+        if (state?.success === true) {
+            router.replace("/posts");
+        }
+    }, [state?.success]);
 
     const router = useRouter();
 
@@ -70,7 +85,7 @@ export default function CreatePostForm() {
     };
 
     const handleCancel = () => {
-        router.push("/posts");
+        router.replace("/posts");
     };
 
     return (
@@ -85,7 +100,8 @@ export default function CreatePostForm() {
             <form
                 // onSubmit={handleSubmit}
                 action={formAction}
-                className="rounded-md p-4 shadow-sm bg-surface flex flex-col gap-4 w-full"
+                className="rounded-md p-4 shadow-sm bg-surface flex flex-col w-full"
+                ref={formRef}
             >
                 <div className="flex flex-col gap-2">
                     <label htmlFor="title">Title</label>
@@ -96,7 +112,7 @@ export default function CreatePostForm() {
                         onChange={handleChange}
                         required
                         minLength={2}
-                        maxLength={100}
+                        maxLength={POST_TITLE_MAX_LENGTH}
                         className={
                             "border p-2 rounded-md " +
                             (state?.errors.title
@@ -104,6 +120,9 @@ export default function CreatePostForm() {
                                 : "border-primary")
                         }
                     />
+                    <p className="self-end">
+                        {postTitle.length}/{POST_TITLE_MAX_LENGTH}
+                    </p>
                     {state?.errors.title && (
                         <p className="text-red-500">{state.errors.title}</p>
                     )}
@@ -124,6 +143,9 @@ export default function CreatePostForm() {
                                 : "border-primary")
                         }
                     />
+                    <p className="self-end">
+                        {postDescription.length}/{POST_DESCRIPTION_MAX_LENGTH}
+                    </p>
                     {state?.errors.description && (
                         <p className="text-red-500">
                             {state.errors.description}
@@ -131,7 +153,7 @@ export default function CreatePostForm() {
                     )}
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 mb-8">
                     <label htmlFor="coverImageUrl">Cover Image URL</label>
                     <input
                         type="url"
@@ -168,6 +190,9 @@ export default function CreatePostForm() {
                                 : "border-primary")
                         }
                     />
+                    <p className="self-end">
+                        {postContent.length}/{POST_CONTENT_MAX_LENGTH}
+                    </p>
                     {state?.errors.content && (
                         <p className="text-red-500">{state.errors.content}</p>
                     )}
@@ -175,7 +200,7 @@ export default function CreatePostForm() {
 
                 <button
                     type="submit"
-                    className="bg-primary text-white rounded-md p-2 cursor-pointer disabled:bg-primary/50 disabled:cursor-not-allowed"
+                    className="bg-primary text-white rounded-md p-2 mb-4 mt-4 cursor-pointer hover:bg-primary/80 disabled:bg-primary/50 disabled:cursor-not-allowed"
                     disabled={isPending}
                 >
                     Create
@@ -184,7 +209,7 @@ export default function CreatePostForm() {
                     type="button"
                     onClick={handleCancel}
                     disabled={isPending}
-                    className="border p-2 rounded-md border-red-500 cursor-pointer disabled:border-red-500/50 disabled:cursor-not-allowed"
+                    className="border p-2 rounded-md border-red-500 cursor-pointer hover:opacity-80 disabled:border-red-500/50 disabled:cursor-not-allowed"
                 >
                     Cancel
                 </button>

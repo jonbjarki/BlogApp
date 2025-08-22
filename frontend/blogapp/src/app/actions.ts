@@ -1,6 +1,6 @@
 "use server";
 
-import { CREATE_POST_URL } from "@/lib/constants";
+import { CREATE_POST_URL, POST_CONTENT_MAX_LENGTH, POST_DESCRIPTION_MAX_LENGTH, POST_TITLE_MAX_LENGTH } from "@/lib/constants";
 import { getAuthCookie, getErrorMessage, getZodIssues } from "@/lib/utils";
 import { FormErrorStateType } from "@/types/BlogPostType";
 import { revalidateTag } from "next/cache";
@@ -11,9 +11,9 @@ export async function createPostAction(
     data: FormData
 ): Promise<FormErrorStateType | undefined> {
     const createPostSchema = z.object({
-        title: z.string({ error: "Invalid title" }).min(2).max(100),
-        description: z.string({ error: "Invalid description" }).min(2).max(300),
-        content: z.string({ error: "Invalid content" }).min(10).max(4000),
+        title: z.string({ error: "Invalid title" }).min(2).max(POST_TITLE_MAX_LENGTH),
+        description: z.string({ error: "Invalid description" }).min(2).max(POST_DESCRIPTION_MAX_LENGTH),
+        content: z.string({ error: "Invalid content" }).min(10).max(POST_CONTENT_MAX_LENGTH),
         coverImageUrl: z.optional(z.url()),
     });
 
@@ -67,6 +67,10 @@ export async function createPostAction(
             console.log("Post created successfully");
             // Force revalidation of cache to display the created post
             revalidateTag("posts");
+            return {
+                errors: {},
+                success: true,
+            };
         }
     } catch (error) {
         console.error(

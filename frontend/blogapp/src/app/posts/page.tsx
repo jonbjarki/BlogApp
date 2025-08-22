@@ -11,7 +11,7 @@ export default async function PostsPage({
     const showForm = (await searchParams).showForm;
 
     return (
-        <main className="mt-4 flex max-w-4xl flex-col items-center">
+        <main className="mt-4 mb-10 flex max-w-4xl flex-col items-center">
             <div className="w-full flex flex-row justify-between items-center mb-4">
                 {!showForm && <h1 className="text-4xl font-bold">Posts</h1>}
                 {!showForm ? <CreatePostButton /> : <CreatePostForm />}
