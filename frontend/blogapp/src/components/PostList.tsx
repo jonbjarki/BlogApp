@@ -2,7 +2,7 @@ import { BlogPostType } from "@/types/BlogPostType";
 import axios from "axios";
 import BlogPost from "./PostListItem";
 import { ClipLoader } from "react-spinners";
-import CenteredSpinner from "./CenteredSpinner";
+import CenteredSpinner from "./spinners/CenteredSpinner";
 import { FETCH_POSTS_URL } from "@/lib/constants";
 
 async function fetchPosts() {
@@ -12,13 +12,13 @@ async function fetchPosts() {
     });
 
     if (!res.ok) {
-        console.error("Fetching posts failed",await res.text());
+        console.error("Fetching posts failed", await res.text());
         return [];
     }
 
     console.log("Posts fetched:", res);
     const data = await res.json();
-    console.log("Fetched:",data);
+    console.log("Fetched:", data);
 
     return data as BlogPostType[];
 }

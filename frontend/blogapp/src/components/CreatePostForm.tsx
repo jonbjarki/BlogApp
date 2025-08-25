@@ -33,42 +33,12 @@ export default function CreatePostForm() {
     const formRef = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
-        console.log("State changed:", state);
         if (state?.success === true) {
             router.replace("/posts");
         }
     }, [state?.success]);
 
     const router = useRouter();
-
-    // const handleSubmit = async (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     try {
-    //         const res = await axios.post(
-    //             CREATE_POST_URL,
-    //             {
-    //                 title: postTitle,
-    //                 description: postDescription,
-    //                 content: postContent,
-    //                 coverImageUrl: postCoverImageUrl,
-    //             },
-    //             {
-    //                 headers: { "Content-Type": "application/json" },
-    //                 withCredentials: true,
-    //             }
-    //         );
-
-    //         console.log("Post created successfully:", res.data);
-    //         setPostContent("");
-    //         setPostTitle("");
-    //         setPostDescription("");
-    //         setPostCoverImageUrl("");
-    //         handleCancel();
-    //     } catch (error: unknown) {
-    //         const message = getErrorMessage(error);
-    //         console.error("Error occurred with message: ", message);
-    //     }
-    // };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -94,7 +64,7 @@ export default function CreatePostForm() {
                 onClick={handleCancel}
                 className="rounded absolute top-1 right-2 cursor-pointer"
             >
-                x
+                X
             </button>
 
             <form

@@ -5,6 +5,7 @@ import { getAuthCookie, getErrorMessage, getZodIssues } from "@/lib/utils";
 import { FormErrorStateType } from "@/types/BlogPostType";
 import { revalidateTag } from "next/cache";
 import { z } from "zod";
+import { redirect } from 'next/navigation'
 
 export async function createPostAction(
     prevState: any,
@@ -70,12 +71,12 @@ export async function createPostAction(
             return {
                 errors: {},
                 success: true,
-            };
+            }
         }
     } catch (error) {
         console.error(
             "Error occurred while creating post:",
             getErrorMessage(error)
         );
-    }
+    }    
 }

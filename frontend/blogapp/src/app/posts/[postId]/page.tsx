@@ -1,6 +1,6 @@
 "use client";
 
-import CenteredSpinner from "@/components/CenteredSpinner";
+import CenteredSpinner from "@/components/spinners/CenteredSpinner";
 import { FETCH_POSTS_URL, POST_FALLBACK_IMAGE } from "@/lib/constants";
 import { BlogPostFetchResponse, BlogPostType } from "@/types/BlogPostType";
 import { useParams } from "next/navigation";
@@ -44,7 +44,6 @@ export default function ViewPostPage() {
                         <span className="relative w-full my-8 h-80 block">
                             <ImageWithFallback
                                 imageUrl={post.coverImageUrl}
-                                fallbackUrl={POST_FALLBACK_IMAGE}
                                 className="rounded-xl object-cover"
                                 fill
                                 alt={post.title}
